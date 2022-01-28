@@ -1,3 +1,4 @@
+from venv import create
 import pygame
 import random
 pygame.init()
@@ -7,11 +8,18 @@ class DrawInformation:
     BLACK = 0,0,0
     WHITE = 255, 255, 255
     PINK = 239, 170, 196
-    GREY = 107, 113, 126
     LIGHT_PINK = 255, 196, 209
-    ORANGE = 255, 232, 225
+    ORANGE = 255, 215, 186
     GREEN = 212, 220, 205
     BACKGROUND_COLOR = WHITE
+
+    GRADIENTS = [
+        (173, 181, 189),
+        (108, 117, 125),
+        (73, 80, 87)
+    ]
+
+    
 
     # Padding
     SIDE_PAD = 100
@@ -40,6 +48,26 @@ class DrawInformation:
         # Set drawing starting point 
         self.start_x = self.SIDE_PAD // 2
 
+# Draw the screen
+def draw(draw_info):
+    draw_info.window.fill(draw_info.BACKGROUND_COLOR)
+    draw_list(draw_info)
+    pygame.display.update()
+
+# Draw the list that we are sorting
+def draw_list(draw_info):
+    lst = draw_info.lst
+
+    for i, val in enumerate(lst):
+        x = draw_info.start_x + i * draw_info.block_width
+        y = draw_info.height - (val - draw_info.min_val) * draw_info.block_height
+        color = draw_info.GRADIENTS[i % 3]
+
+        # Draw rectangle blocks 
+        pygame.draw.rect(draw_info.window, color, (x, y, draw_info.block_width, draw_info.height))
+
+
+
 # Generate initial list that contains n random integer elements 
 # between min_val and max_val
 def generate_starting_list(n, min_val, max_val):
@@ -55,15 +83,32 @@ def main():
     run = True
     # Set a clock that regulates how quickly the loop runs
     clock = pygame.time.Clock()
+
+    # Set display mode
+    n = 50
+    min_val = 0
+    max_val = 100
+
+    lst = generate_starting_list(n, min_val, max_val)
+    draw_info = DrawInformation(800, 600, lst)
+
     while run:
         clock.tick(60)
-        # Draw and Display window
-        pygame.display.update()
+
+        draw(draw_info)
 
         for event in pygame.event.get():
-            if event == pygame.QUIT:
+            if event.type == pygame.QUIT:
                 run = False
-    pygame.quit
+            
+            if pygame.event != pygame.KEYDOWN:
+                continue
+
+            if pygame.event.key == pygame.K_r:
+                lst = generate_starting_list(n, min_val, max_val)
+                draw_info.set_list(lst)
+
+    pygame.quit()
 
 if __name__ == "__main__":
     main()
