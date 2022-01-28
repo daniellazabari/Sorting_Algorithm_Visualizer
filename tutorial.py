@@ -101,10 +101,10 @@ def main():
             if event.type == pygame.QUIT:
                 run = False
             
-            if pygame.event != pygame.KEYDOWN:
+            if event.type != pygame.KEYDOWN:
                 continue
 
-            if pygame.event.key == pygame.K_r:
+            if event.key == pygame.K_r:
                 lst = generate_starting_list(n, min_val, max_val)
                 draw_info.set_list(lst)
 
