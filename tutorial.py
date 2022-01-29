@@ -1,3 +1,4 @@
+from turtle import width
 import pygame
 import random
 pygame.init()
@@ -18,7 +19,9 @@ class DrawInformation:
         (73, 80, 87)
     ]
 
-    
+    # Fonts
+    FONT = pygame.font.SysFont('georgia', 15) # Regular font
+    FONT = pygame.font.SysFont('georgia', 25) # Large font
 
     # Padding
     SIDE_PAD = 100
@@ -50,6 +53,14 @@ class DrawInformation:
 # Draw the screen
 def draw(draw_info):
     draw_info.window.fill(draw_info.BACKGROUND_COLOR)
+
+    # Display text on the screen
+    controls = draw_info.FONT.render("R - Reset | SPACE - Start Sorting | A - Ascending | D - Descending", 1, draw_info.BLACK)
+    draw_info.window.blit(controls, ((draw_info.width - controls.get_width())/2, 10))
+    sorting = draw_info.FONT.render("I - Insertion Sort | B - Buble Sort", 1, draw_info.BLACK)
+    draw_info.window.blit(sorting, ((draw_info.width - sorting.get_width())/2, 45))
+
+
     draw_list(draw_info)
     pygame.display.update()
 
@@ -90,6 +101,8 @@ def main():
 
     lst = generate_starting_list(n, min_val, max_val)
     draw_info = DrawInformation(800, 600, lst)
+    sorting = False
+    ascending = True
 
     while run:
         clock.tick(60)
@@ -100,12 +113,28 @@ def main():
             if event.type == pygame.QUIT:
                 run = False
             
+            # If no key is pressed- continue
             if event.type != pygame.KEYDOWN:
                 continue
-
+            
+            # If "r" key is pressed- reset the list
             if event.key == pygame.K_r:
                 lst = generate_starting_list(n, min_val, max_val)
                 draw_info.set_list(lst)
+                sorting = False
+            
+            # Else if space key is pressed- start sorting  
+            elif event.key == pygame.K_SPACE and sorting == False:
+                sorting = True
+            
+            # Else if "a" key is pressed- sort in ascending order  
+            elif event.key == pygame.K_a and not sorting:
+                ascending = True
+            
+            # Else if "d" key is pressed- sort in descending order  
+            elif event.key == pygame.K_d and not sorting:
+                ascending = False
+
 
     pygame.quit()
 
