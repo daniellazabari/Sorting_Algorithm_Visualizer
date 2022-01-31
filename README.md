@@ -5,10 +5,10 @@ This is a coparison-based sorting algorithm visualizer that uses pygame.
 Currently, the project implements:
 - Bubble Sort
 - Insertion Sort
-(/assets/visualizer.png)
+[](/assets/visualizer.png)
 
 ## Useful Links
--[Pygame](https://www.pygame.org/news)
+- [Pygame](https://www.pygame.org/news)
 
 ## Set Up
 1. Clone the repository
