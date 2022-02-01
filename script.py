@@ -60,7 +60,7 @@ def draw(draw_info, algo_name, ascending):
     draw_info.window.blit(title, ((draw_info.width - title.get_width())/2, 5))
     controls = draw_info.FONT.render("R - Reset | SPACE - Start Sorting | A - Ascending | D - Descending", 1, draw_info.BLACK)
     draw_info.window.blit(controls, ((draw_info.width - controls.get_width())/2, 45))
-    sorting = draw_info.FONT.render("I - Insertion Sort | B - Buble Sort", 1, draw_info.BLACK)
+    sorting = draw_info.FONT.render("I - Insertion Sort | B - Buble Sort | Q - Quick Sort", 1, draw_info.BLACK)
     draw_info.window.blit(sorting, ((draw_info.width - sorting.get_width())/2, 75))
 
 
@@ -103,7 +103,6 @@ def generate_starting_list(n, min_val, max_val):
 
 def bubble_sort(draw_info, ascending= True):
     lst = draw_info.lst
-    # [2, 3, 5, 8, 3, 1, 4]
     for i in range(len(lst) - 1):
         for j in range(len(lst) - 1 - i):
             num1 = lst[j]
@@ -135,6 +134,23 @@ def insertion_sort(draw_info, ascending= True):
             yield True
     
     return lst
+
+def quick_sort(draw_info, ascending= True):
+   lst = draw_info.lst
+
+   for i in range(1, len(lst)):
+       pivot = lst[i]
+       j = i - 1
+       # Condition for swapping when sorting in ascending order 
+       ascending_sort = j >= 0 and lst[j] < pivot and ascending
+       # Condition for swapping when sorting in descending order 
+       descending_sort = j >= 0 and lst[j] < pivot and not ascending
+       while True:
+        if not ascending_sort and not descending_sort:
+            break
+        
+
+
 
 def main():
     run = True
@@ -201,6 +217,10 @@ def main():
             elif event.key == pygame.K_i and not sorting:
                 sorting_algorithm = insertion_sort
                 sorting_algo_name = 'Insertion Sort'
+
+            elif event.key == pygame.K_q and not sorting:
+                sorting_algorithm = quick_sort
+                sorting_algo_name = 'Quick Sort'
 
     pygame.quit()
 
